@@ -21,11 +21,12 @@ function Category() {
     <Card className='mt-3' style={{ width: '100%' }}>
       
       <Card.Body className='bg-black'>
-        <Card.Text className='border border-secondary rounded p-3  d-flex justify-content-between align-items-center'>
+      <Card.Text className='border border-secondary rounded p-3  d-flex justify-content-between align-items-center'>
           Tamil songs <Button className='ms-5' variant="danger"><FontAwesomeIcon icon={faTrashCan} /></Button>
-       
+          
         </Card.Text>
         <div>
+        
         <Videocard/>
        </div>
         {/* <Card.Text className='border border-secondary rounded p-3 d-flex justify-content-between align-items-center'>

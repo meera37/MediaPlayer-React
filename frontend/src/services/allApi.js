@@ -10,3 +10,13 @@ export const videoAddApi = async(reqBody)=>{
 export const allVideosApi = async()=>{
     return await commonApi('GET',`${serverurl}/videos`)
 }
+
+//api to delete  video
+export const deleteVideoApi = async(id)=>{
+    return await commonApi('DELETE',`${serverurl}/videos/${id}`,{})
+}
+
+//api to add video to watch history
+export const addVideoHistoryApi = async(reqBody)=>{
+    return await commonApi('POST',`${serverurl}/history`,reqBody)
+}

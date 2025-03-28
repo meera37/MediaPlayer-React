@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Videocard from './Videocard'
 import { allVideosApi } from '../services/allApi'
 
-function Allvideos() {
+function Allvideos({addVideoStatus}) {
 
 const [allVideo, setAllVideo] = useState([])
+const [deleteVideoStatus, setDeleteVideoStatus] = useState({})
 
 const getAllVideo = async()=>{
   const result = await allVideosApi()
@@ -19,7 +20,7 @@ const getAllVideo = async()=>{
 
 useEffect(()=>{
   getAllVideo()
-},[])
+},[addVideoStatus ,deleteVideoStatus])
 
   return (
     <>
@@ -30,7 +31,7 @@ useEffect(()=>{
     allVideo?.length > 0 ?
 allVideo?.map((item , index) => (
   <div className="col-md-3 p-2" key={index}>
-        <Videocard video={item}/>
+        <Videocard video={item} setDeleteVideoStatus={setDeleteVideoStatus}/>
     </div> 
 )):
     <div className='d-flex justify-content-center align-items-center flex-column'>

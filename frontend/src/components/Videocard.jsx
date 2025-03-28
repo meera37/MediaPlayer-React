@@ -5,16 +5,43 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import { addVideoHistoryApi, deleteVideoApi } from '../services/allApi';
 
 
-function Videocard({video}) {
-  console.log(video);
+function Videocard({video,setDeleteVideoStatus}) {
+ // console.log(video);
   
 
     const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const addVideoHistory = async()=>{
+    //api
+    let caption = video?.caption
+    let url = video?.embedLink
+    const time = new Date()
+  // console.log(time);
+    const result = new Intl.DateTimeFormat("en-GB",{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(time);
+  //  console.log(result);
+    
+    const response = await addVideoHistoryApi({caption,url,time:result}) //caption:caption, key:value
+  //  console.log(response);
+    
+  }
+  const handleShow = () => {setShow(true);
+    addVideoHistory()
+  }
+
+  const deleteVideo = async(id)=>{
+    const result = await deleteVideoApi(id)
+    //console.log(result);
+    if(result.status>=200 && result.status<300){
+      setDeleteVideoStatus(result.data)
+    }
+
+    
+  }
 
   return (
     <>
@@ -23,7 +50,7 @@ function Videocard({video}) {
       <Card.Body className='d-flex justify-content-between align-items-center'>
         <Card.Text >{video?.caption}</Card.Text>
         
-        <Button variant="danger"><FontAwesomeIcon icon={faTrashCan} /></Button>
+        <Button variant="danger" ><FontAwesomeIcon icon={faTrashCan} onClick={()=>deleteVideo(video?.id)} /></Button>
       </Card.Body>
     </Card>
     <Modal show={show} onHide={handleClose}>

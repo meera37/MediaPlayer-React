@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import { videoAddApi } from '../services/allApi';
 import { toast, ToastContainer } from 'react-toastify';
 
-function Add() {
+function Add({setAddVideoStatus}) {  //destructuring 
 
     const [show, setShow] = useState(false);
     const [videoDetails, setvideoDetails] = useState({
@@ -45,6 +45,7 @@ if(embedLink.startsWith('https://youtu.be')){
         if(result.status >=200 && result.status<300){
          toast.success('Video added Successfully')
             handleClose()
+            setAddVideoStatus(result.data)
         }
         else{
             toast.danger('Something went wrong')
@@ -60,6 +61,7 @@ if(embedLink.startsWith('https://youtu.be')){
         if(result.status >=200 && result.status<300){
             toast.success('Video added Successfully')
             handleClose()
+            setAddVideoStatus(result.data)
         }
         else{
             toast.danger('Something went wrong')
