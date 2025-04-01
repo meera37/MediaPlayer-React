@@ -1,10 +1,39 @@
 import { faHouse } from '@fortawesome/free-solid-svg-icons/faHouse'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { deleteVideoHistory, VideoHistoryApi } from '../services/allApi'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
 function Watchhistory() {
+const [watchHistory,setWatchHistory]=useState([])
+const [deleteStatus, setDeleteStatus]= useState({})
+
+  const getWatchHistory = async ()=>{
+   let result = await VideoHistoryApi()
+  //  console.log(result.data);
+    if(result.status>=200 && result.status<300){
+      setWatchHistory(result.data)
+     }
+    
+  }
+ // console.log(watchHistory);
+  
+const deleteVideo = async(id)=>{
+  const result = await deleteVideoHistory(id)
+  console.log(result);
+  if(result.status >=200 && result.status <300){
+    setDeleteStatus(result.data)
+  }
+  
+}
+
+
+  useEffect(()=>{
+    getWatchHistory()
+  },[deleteStatus])
+
   return (
     <>
       <div className="container d-flex justify-content-between align-items-center mt-5">
@@ -16,7 +45,8 @@ function Watchhistory() {
 </div>
 
       <div className="container mt-5 table-responsive">
-        <table className='table table-bordered'>
+        {
+          watchHistory?.length>0?<table className='table table-bordered'>
           <thead>
             <tr>
               <th className='p-3 text-center'>Sl.No</th>
@@ -27,18 +57,27 @@ function Watchhistory() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>dummy</td>
-              <td>dummy</td>
-              <td><Link to={''}>dummy</Link></td>
-              <td>dummy</td>
-              <td>dummy</td>
+            {
+          watchHistory?.map((item, index)=>(
+<tr key={index}>
+              <td>{index+1}</td>
+              <td>{item?.caption}</td>
+              <td><Link to={`${item?.url}`} target='_blank'>{item?.url}</Link></td>
+              <td>{item?.time}</td>
+              <td><button onClick={()=>deleteVideo(item?.id)} className='btn btn-danger ms-3'><FontAwesomeIcon icon={faTrash} /></button></td>
             </tr>
+          ))
+
+              
+            }
+            
           </tbody>
-        </table>
+        </table> :  <h4 className='text-danger text-center mt-5'>history cleared</h4>
+          }
       </div>
     </>
   )
+ 
 }
 
 export default Watchhistory
