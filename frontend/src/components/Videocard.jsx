@@ -42,10 +42,18 @@ function Videocard({video,setDeleteVideoStatus}) {
 
     
   }
+  const videoDrag =(e, video)=>{
+    console.log(e);
+    console.log(video);
+
+    e.dataTransfer.setData("videoDetails", JSON.stringify(video))
+    
+    
+  }
 
   return (
     <>
-    <Card style={{ width: '100%' }}>
+    <Card draggable onDragStart={(e)=>videoDrag(e, video)} style={{ width: '100%' }}>
       <Card.Img  onClick={handleShow} variant="top" src={video?.image} style={{height:'300px'}}/>
       <Card.Body className='d-flex justify-content-between align-items-center'>
         <Card.Text >{video?.caption}</Card.Text>
